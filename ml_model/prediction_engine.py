@@ -1,13 +1,24 @@
+
 import joblib
 import numpy as np
-from data.world_cup_data import WORLD_CUP_2026_TEAMS
+import os
+import sys
+
+# Add the ml_model directory to the path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from ml_model.data.world_cup_data import WORLD_CUP_2026_TEAMS
 
 class PredictionEngine:
     def __init__(self):
         try:
-            self.model = joblib.load('models/world_cup_model.joblib')
-            self.scaler = joblib.load('models/scaler.joblib')
-            self.region_map = joblib.load('models/region_map.joblib')
+            model_path = os.path.join(os.path.dirname(__file__), 'models', 'world_cup_model.joblib')
+            scaler_path = os.path.join(os.path.dirname(__file__), 'models', 'scaler.joblib')
+            region_map_path = os.path.join(os.path.dirname(__file__), 'models', 'region_map.joblib')
+            
+            self.model = joblib.load(model_path)
+            self.scaler = joblib.load(scaler_path)
+            self.region_map = joblib.load(region_map_path)
         except FileNotFoundError:
             print("Warning: Model files not found. Please train the model first.")
             self.model = None

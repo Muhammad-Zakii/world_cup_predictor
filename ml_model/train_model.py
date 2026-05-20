@@ -5,9 +5,14 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 import joblib
 import os
+import sys
+
+# Add the ml_model directory to the path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 from data.world_cup_data import WORLD_CUP_2026_TEAMS
 
-os.makedirs('models', exist_ok=True)
+os.makedirs(os.path.join(os.path.dirname(__file__), 'models'), exist_ok=True)
 
 # Historical World Cup data
 historical_data = [
@@ -51,8 +56,9 @@ test_score = model.score(X_test_scaled, y_test)
 print(f"Training R² Score: {train_score:.4f}")
 print(f"Testing R² Score: {test_score:.4f}")
 
-joblib.dump(model, 'models/world_cup_model.joblib')
-joblib.dump(scaler, 'models/scaler.joblib')
-joblib.dump(region_map, 'models/region_map.joblib')
+models_dir = os.path.join(os.path.dirname(__file__), 'models')
+joblib.dump(model, os.path.join(models_dir, 'world_cup_model.joblib'))
+joblib.dump(scaler, os.path.join(models_dir, 'scaler.joblib'))
+joblib.dump(region_map, os.path.join(models_dir, 'region_map.joblib'))
 
 print("Model trained and saved successfully!")
